@@ -22,20 +22,40 @@ let notes = [
   }
 ]
 
+// GET TEXT
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
+// GET API
 app.get('/api/notes', (request, response) => {
   response.json(notes)
 })
 
+// GET API/id
 app.get('/api/notes/:id', (request, response) => {
   const id = Number(request.params.id)
   const note = notes.find(note => note.id === id)
   
   if (note) {
     response.json(note)
+  } else {
+    response.status(404).end()
+  }
+})
+
+// DELETE API/id
+app.delete('/api/notes/:id', (request, response) => {
+  const id = Number(request.params.id)
+  note = notes.find(note => note.id === id)
+  notes = notes.filter(note => note.id !== id)
+
+  if (notes) {
+    response.json({
+      deleted: true,
+      note
+    })
+    response.status(204).end()
   } else {
     response.status(404).end()
   }
