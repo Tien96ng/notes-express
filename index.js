@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 let notes = [
   {
     id: 1,
@@ -59,6 +61,14 @@ app.delete('/api/notes/:id', (request, response) => {
   } else {
     response.status(404).end()
   }
+})
+
+// POST
+app.post('/api/notes', (request, response) => {
+  const note = request.body
+  console.log(note)
+  notes = [...notes, note]
+  response.json(notes)
 })
 
 const PORT = 3001
